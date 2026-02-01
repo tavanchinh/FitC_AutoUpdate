@@ -1,6 +1,7 @@
 {
-  "version_code": 100,
-  "version_name": "1.0.0",
+  "version_code": 101,
+  "version_name": "1.0.1",
   "manifest_url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/updater/manifest.json",
-  "changelog": "- Tính năng tối ưu ván 2 mặt"
+  "changelog": "Thêm tính năng tự động update code"
+
 }
