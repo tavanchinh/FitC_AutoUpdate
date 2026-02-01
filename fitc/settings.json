@@ -1,0 +1,10 @@
+{
+  "AntiFly": {
+    "color_left": "#0ab2a7",
+    "color_right": "#ff0066",
+    "layer_left": "TRAI",
+    "layer_right": "PHAI",
+    "max_count": 15,
+    "min_size": 300
+  }
+}
