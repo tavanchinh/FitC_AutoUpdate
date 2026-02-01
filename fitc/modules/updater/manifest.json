@@ -1,9 +1,5 @@
 [
   {
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/updater/updater.rb",
-    "path": "fitc/modules/updater/updater.rb"
-  },
-  {
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/updater/version.json",
     "path": "fitc/modules/updater/version.json"
   },
@@ -20,3 +16,4 @@
     "path": "fitc/modules/find_two_face/ui.html"
   }
 ]
+
