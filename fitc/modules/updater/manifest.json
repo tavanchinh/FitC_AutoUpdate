@@ -4,14 +4,12 @@
     "path": "fitc/modules/updater/manifest.json"
   },
   {
-    "path": "fitc/modules/find_two_face/main.rb",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/find_two_face/main.rb"
+    "path": "fitc/toolbar.rbe",
+    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/toobar.rbe"
   },
-  {
-    "path": "fitc/modules/find_two_face/ui.html",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/find_two_face/ui.html"
-  }
+  
 ]
+
 
 
 
