@@ -6,9 +6,10 @@
 
   "manifest_url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/updater/manifest.json",
 
-  "changelog": "- Thêm tính năng chống bay theo vùng TRÊN / DƯỚI \n-Fix lại tính năng chống bay nhiều lần sẽ không nhận layer \n-Thêm tính năng kiểm tra lỗi nesting"
+  "changelog": "\n- Thêm tính năng chống bay theo vùng TRÊN / DƯỚI \n-Fix lại tính năng chống bay nhiều lần sẽ không nhận layer \n-Thêm tính năng kiểm tra lỗi nesting"
 
 }
+
 
 
 
