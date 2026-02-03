@@ -3,78 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { font-family: sans-serif; padding: 15px; background-color: #f5f5f5; color: #333; }
-        .field-group { margin-bottom: 12px; }
-        label { display: block; font-size: 12px; margin-bottom: 4px; font-weight: bold; }
-        input { 
-            width: 100%; padding: 8px; box-sizing: border-box; 
-            border: 1px solid #ccc; border-radius: 4px; 
+        :root {
+            --primary: #2ecc71;
+            --accent: #3498db;
+            --bg: #f8f9fa;
+            --text: #2c3e50;
+            --border: #dcdde1;
         }
-        .color-row { display: flex; gap: 10px; }
-        .color-row div { flex: 1; }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            padding: 20px; 
+            background: var(--bg); 
+            color: var(--text);
+            margin: 0;
+            user-select: none;
+        }
+
+        .card { 
+            background: white; 
+            padding: 18px; 
+            border-radius: 12px; 
+            border: 1px solid var(--border); 
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        label { 
+            display: block; 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: #95a5a6; 
+            margin-bottom: 8px; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group { display: flex; gap: 12px; }
+        .input-group div { flex: 1; }
+
+        input[type="number"], input[type="text"] { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid var(--border); 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus { border-color: var(--accent); }
+
+        /* Grid Layout */
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1.2fr 1fr; 
+            gap: 15px; 
+            align-items: center; 
+            margin-top: 10px; 
+        }
+
+        .grid-item { text-align: center; }
+
+        /* Sơ đồ Khổ Ván Trực Quan */
+        .box-preview {
+            grid-column: 2; 
+            grid-row: 2; 
+            border: 2px solid var(--accent); 
+            height: 110px; 
+            position: relative;
+            background: #ebf5fb;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .origin-point {
+            position: absolute; bottom: 6px; left: 6px;
+            width: 8px; height: 8px;
+            background: #e74c3c; border-radius: 50%;
+            z-index: 2;
+        }
+
+        .axis {
+            position: absolute; background: #333; z-index: 1;
+        }
+        .axis-x { bottom: 10px; left: 10px; width: 40px; height: 1.5px; }
+        .axis-y { bottom: 10px; left: 10px; width: 1.5px; height: 40px; }
+
+        .sheet-text { font-weight: 800; color: var(--accent); font-size: 13px; letter-spacing: 1px; }
+        .size-info { font-size: 9px; color: #95a5a6; margin-top: 4px; }
+
+        .layer-input { margin-bottom: 5px; font-size: 12px !important; text-align: center; font-weight: bold; color: var(--text); }
+        .color-input { 
+            width: 100%; height: 30px; border: 2px solid white; padding: 0; 
+            cursor: pointer; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
         button { 
-            width: 100%; padding: 12px; background-color: #27ae60; 
-            color: white; border: none; border-radius: 4px; 
-            cursor: pointer; font-weight: bold; margin-top: 10px;
+            width: 100%; padding: 16px; 
+            background: var(--primary); 
+            color: white; border: none; 
+            border-radius: 10px; font-weight: bold; 
+            cursor: pointer; font-size: 15px; 
+            box-shadow: 0 4px 12px rgba(46,204,113,0.3); 
+            transition: all 0.2s; 
         }
-        button:hover { background-color: #2ecc71; }
-        .footer { font-size: 10px; color: #888; text-align: center; margin-top: 15px; }
+
+        button:hover { background: #27ae60; transform: translateY(-1px); box-shadow: 0 6px 15px rgba(46,204,113,0.4); }
+        button:active { transform: translateY(0); }
+
+        .footer { text-align: center; font-size: 10px; color: #bdc3c7; margin-top: 20px; }
+
+        /* Toast Notification */
+        #toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 10px 20px;
+            border-radius: 20px; font-size: 12px; display: none; z-index: 100;
+        }
     </style>
 </head>
 <body>
-    <div class="field-group">
-        <label>Kích thước tấm nhỏ tối đa (mm)</label>
-        <input type="number" id="min_size">
-    </div>
 
-    <div class="field-group">
-        <label>Giới hạn số lượng (1-n)</label>
-        <input type="number" id="max_count">
-    </div>
-
-    <div class="color-row">
-        <div class="field-group">
-            <label>Tên Layer TRAI</label>
-            <input type="text" id="layer_left">
-            <input type="color" id="color_left" style="height:30px; padding:2px; margin-top:5px;">
-        </div>
-        <div class="field-group">
-            <label>Tên Layer PHAI</label>
-            <input type="text" id="layer_right">
-            <input type="color" id="color_right" style="height:30px; padding:2px; margin-top:5px;">
+    <div class="card">
+        <label>Thông số tấm nhỏ & số layer</label>
+        <div class="input-group">
+            <div><input type="number" id="min_size" title="Kích thước cạnh nhỏ nhất"></div>
+            <div><input type="number" id="max_count" title="Số lượng layer tối đa mỗi hướng"></div>
         </div>
     </div>
 
-    <button onclick="runProcess()">THỰC HIỆN</button>
-    <div class="footer">FitC chống bay tự động - Bản thử nghiệm</div>
+    <div class="card">
+        <label>Định nghĩa vùng (Trống Trên/Dưới để dùng 2 vùng)</label>
+        <div class="grid-container">
+            <div class="grid-item" style="grid-column: 2; grid-row: 1;">
+                <input type="text" id="layer_top" class="layer-input" placeholder="Tên Layer">
+                <input type="color" id="color_top" class="color-input">
+            </div>
+
+            <div class="grid-item" style="grid-column: 1; grid-row: 2;">
+                <input type="text" id="layer_left" class="layer-input">
+                <input type="color" id="color_left" class="color-input">
+            </div>
+
+            <div class="box-preview">
+                <div class="origin-point"></div>
+                <div class="axis axis-x"></div>
+                <div class="axis axis-y"></div>
+                <span class="sheet-text">KHỔ VÁN</span>
+                <span class="size-info">GỐC VÁN (0,0)</span>
+            </div>
+
+            <div class="grid-item" style="grid-column: 3; grid-row: 2;">
+                <input type="text" id="layer_right" class="layer-input">
+                <input type="color" id="color_right" class="color-input">
+            </div>
+
+            <div class="grid-item" style="grid-column: 2; grid-row: 3;">
+                <input type="text" id="layer_bottom" class="layer-input" placeholder="Tên Layer">
+                <input type="color" id="color_bottom" class="color-input">
+            </div>
+        </div>
+    </div>
+
+    <button onclick="run()">THỰC HIỆN GÁN LAYER</button>
+    <div id="toast">Đã lưu cài đặt!</div>
+    <div class="footer">FitC Chống bay PRO • Phiên bản thử nghiệm</div>
 
     <script>
-        // Hàm này được Ruby gọi khi Dialog vừa hiện lên
-        function updateFields(settings) {
-            document.getElementById('min_size').value = settings.min_size;
-            document.getElementById('max_count').value = settings.max_count;
-            document.getElementById('layer_left').value = settings.layer_left;
-            document.getElementById('color_left').value = settings.color_left;
-            document.getElementById('layer_right').value = settings.layer_right;
-            document.getElementById('color_right').value = settings.color_right;
+        // Cập nhật dữ liệu từ Ruby vào HTML
+        function updateFields(data) {
+            for (let key in data) {
+                let el = document.getElementById(key);
+                if (el) el.value = data[key];
+            }
+            showToast("Đã tải cấu hình gần nhất");
         }
 
-        function runProcess() {
-            // Lấy dữ liệu từ các ô nhập liệu
-            const data = {
-                min_size: parseFloat(document.getElementById('min_size').value),
-                max_count: parseInt(document.getElementById('max_count').value),
-                layer_left: document.getElementById('layer_left').value,
-                color_left: document.getElementById('color_left').value,
-                layer_right: document.getElementById('layer_right').value,
-                color_right: document.getElementById('color_right').value
-            };
-            
-            // Gửi dữ liệu về cho Ruby xử lý và lưu vào settings.json
+        // Gửi dữ liệu về Ruby
+        function run() {
+            let data = {};
+            document.querySelectorAll('input').forEach(i => data[i.id] = i.value);
             sketchup.run_process(data);
         }
 
-        // Thông báo cho Ruby là JS đã sẵn sàng nhận dữ liệu
+        // Hiển thị thông báo nhỏ thay cho MessageBox
+        function showToast(msg) {
+            let t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 2500);
+        }
+
         window.onload = () => { sketchup.ready(); };
     </script>
 </body>

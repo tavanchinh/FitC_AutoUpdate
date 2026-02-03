@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: sans-serif; padding: 15px; background-color: #f5f5f5; color: #333; }
+        .field-group { margin-bottom: 12px; }
+        label { display: block; font-size: 12px; margin-bottom: 4px; font-weight: bold; }
+        input { 
+            width: 100%; padding: 8px; box-sizing: border-box; 
+            border: 1px solid #ccc; border-radius: 4px; 
+        }
+        .color-row { display: flex; gap: 10px; }
+        .color-row div { flex: 1; }
+        button { 
+            width: 100%; padding: 12px; background-color: #27ae60; 
+            color: white; border: none; border-radius: 4px; 
+            cursor: pointer; font-weight: bold; margin-top: 10px;
+        }
+        button:hover { background-color: #2ecc71; }
+        .footer { font-size: 10px; color: #888; text-align: center; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="field-group">
+        <label>Kích thước tấm nhỏ tối đa (mm)</label>
+        <input type="number" id="min_size">
+    </div>
+
+    <div class="field-group">
+        <label>Giới hạn số lượng (1-n)</label>
+        <input type="number" id="max_count">
+    </div>
+
+    <div class="color-row">
+        <div class="field-group">
+            <label>Tên Layer TRAI</label>
+            <input type="text" id="layer_left">
+            <input type="color" id="color_left" style="height:30px; padding:2px; margin-top:5px;">
+        </div>
+        <div class="field-group">
+            <label>Tên Layer PHAI</label>
+            <input type="text" id="layer_right">
+            <input type="color" id="color_right" style="height:30px; padding:2px; margin-top:5px;">
+        </div>
+    </div>
+
+    <button onclick="runProcess()">THỰC HIỆN</button>
+    <div class="footer">FitC chống bay tự động - Bản thử nghiệm</div>
+
+    <script>
+        // Hàm này được Ruby gọi khi Dialog vừa hiện lên
+        function updateFields(settings) {
+            document.getElementById('min_size').value = settings.min_size;
+            document.getElementById('max_count').value = settings.max_count;
+            document.getElementById('layer_left').value = settings.layer_left;
+            document.getElementById('color_left').value = settings.color_left;
+            document.getElementById('layer_right').value = settings.layer_right;
+            document.getElementById('color_right').value = settings.color_right;
+        }
+
+        function runProcess() {
+            // Lấy dữ liệu từ các ô nhập liệu
+            const data = {
+                min_size: parseFloat(document.getElementById('min_size').value),
+                max_count: parseInt(document.getElementById('max_count').value),
+                layer_left: document.getElementById('layer_left').value,
+                color_left: document.getElementById('color_left').value,
+                layer_right: document.getElementById('layer_right').value,
+                color_right: document.getElementById('color_right').value
+            };
+            
+            // Gửi dữ liệu về cho Ruby xử lý và lưu vào settings.json
+            sketchup.run_process(data);
+        }
+
+        // Thông báo cho Ruby là JS đã sẵn sàng nhận dữ liệu
+        window.onload = () => { sketchup.ready(); };
+    </script>
+</body>
+</html>

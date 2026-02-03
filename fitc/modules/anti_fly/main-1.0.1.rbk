@@ -1,0 +1,232 @@
+require 'json'
+
+module FitC
+  module AntiFly
+    # --- 1. QUẢN LÝ SETTINGS ---
+    def self.get_setting_path
+      base_dir = File.dirname(File.dirname(File.dirname(__FILE__)))
+      File.join(base_dir, 'settings.json')
+    end
+
+    def self.load_settings
+      path = self.get_setting_path
+      default_antifly = { 
+        "min_size" => 300.0, 
+        "max_count" => 20,
+        "layer_left" => "TRAI", "color_left" => "#0ab2a7",
+        "layer_right" => "PHAI", "color_right" => "#ff0066" 
+      }
+
+      if File.exist?(path)
+        begin
+          full_data = JSON.parse(File.read(path))
+          @settings = full_data["AntiFly"] || default_antifly
+        rescue
+          @settings = default_antifly
+        end
+      else
+        @settings = default_antifly
+        self.save_settings(default_antifly)
+      end
+      @settings
+    end
+
+    def self.save_settings(data)
+      path = self.get_setting_path
+      @settings = data
+      full_data = File.exist?(path) ? (JSON.parse(File.read(path)) rescue {}) : {}
+      full_data["AntiFly"] = data
+      File.write(path, JSON.pretty_generate(full_data))
+    rescue => e
+      puts "FitC Error: Không thể lưu settings - #{e}"
+    end
+
+    # --- 2. HÀM ĐIỀU CHỈNH CAMERA ---
+    def self.focus_view(entity)
+      view = Sketchup.active_model.active_view
+      # Đưa về góc nhìn TOP, Parallel Projection
+      new_eye = [0, 0, 1000]
+      new_target = [0, 0, 0]
+      new_up = [0, 1, 0]
+      camera = Sketchup::Camera.new(new_eye, new_target, new_up, false)
+      view.camera = camera
+      view.zoom(entity)
+    end
+
+    # --- 3. DỌN DẸP LAYER ---
+    def self.cleanup_old_layers(data)
+      model = Sketchup.active_model
+      layers = model.layers
+      to_delete = layers.select { |l| l.name.start_with?(data["layer_left"]) || l.name.start_with?(data["layer_right"]) }
+      
+      if to_delete.any?
+        model.start_operation('FitC: Cleanup Layers', true)
+        to_delete.each { |lay| layers.remove(lay) }
+        model.commit_operation
+      end
+    end
+
+    # --- 4. GIAO DIỆN DIALOG ---
+    def self.show_dialog
+      # Gọi kiểm tra bản quyền và truyền vào một khối lệnh (block) 
+      # Khối lệnh này chỉ chạy khi kết quả là TRUE
+      FitC::LicenseManager.authorized? do
+        model = Sketchup.active_model
+        level0 = model.selection.find { |ent| ent.is_a?(Sketchup::Group) || ent.is_a?(Sketchup::ComponentInstance) }
+        
+        unless level0
+          UI.messagebox("Hãy chọn cụm Nesting!")
+          next # Thoát khỏi block
+        end
+        # ... Phần code hiện HtmlDialog giữ nguyên ...
+        self.open_main_window(level0) 
+      end
+    end
+
+
+
+    # Tách phần mở cửa sổ ra một hàm riêng để code sạch sẽ hơn
+    def self.open_main_window(level0)
+      self.load_settings
+      # ... (Toàn bộ đoạn khởi tạo UI::HtmlDialog của bạn ở đây) ...
+      dialog = UI::HtmlDialog.new({
+        :dialog_title => "FitC - Chống bay tự động",
+        :width => 380, :height => 420, :style => UI::HtmlDialog::STYLE_DIALOG
+      })
+
+      html_path = File.join(File.dirname(__FILE__), 'web', 'dialog.html')
+      puts "HTML Path: #{html_path}"
+        return UI.messagebox("Thiếu file HTML!") unless File.exist?(html_path)
+
+        dialog.set_file(html_path)
+        dialog.add_action_callback("ready") { dialog.execute_script("updateFields(#{@settings.to_json})") }
+        
+        dialog.add_action_callback("run_process") { |_, data|
+          self.save_settings(data)
+          dialog.close
+          model = Sketchup.active_model
+          # 1. Chỉnh Camera & Zoom
+          self.focus_view(level0)
+          # 2. Bỏ chọn để không bị viền xanh
+          model.selection.clear
+          # 3. Dọn dẹp & Xử lý
+          self.cleanup_old_layers(data)
+          UI.start_timer(0.3, false) { self.main_process(data, level0) }
+        }
+        dialog.show
+    end
+    
+
+    # --- 5. GÁN TAG CẠNH ---
+    def self.tag_edges(entities, target_layer)
+      entities.each do |ent|
+        if ent.is_a?(Sketchup::Edge)
+          ent.layer = target_layer if ent.layer.name == "ABF_cuttingLines"
+        elsif ent.is_a?(Sketchup::Group) || ent.is_a?(Sketchup::ComponentInstance)
+          tag_edges(ent.definition.entities, target_layer)
+        end
+      end
+    end
+
+    # --- 6. XỬ LÝ CHÍNH ---
+    def self.main_process(data, level0)
+      model = Sketchup.active_model
+      all_p = []; all_i = []
+      t0 = level0.transformation
+      max_limit = (data["max_count"] || 20).to_i
+      min_sz = data["min_size"].to_f
+
+      level0.definition.entities.each do |l1|
+        next unless l1.is_a?(Sketchup::Group) || l1.is_a?(Sketchup::ComponentInstance)
+        next if (l1.name + l1.definition.name).downcase.include?("bottom")
+        
+        t1 = t0 * l1.transformation
+        l2_all = l1.definition.entities.select { |e| e.is_a?(Sketchup::Group) || e.is_a?(Sketchup::ComponentInstance) }
+        
+        border = l2_all.find { |e| e.name.include?("__ABF_sheetBorder") || e.definition.name.include?("__ABF_sheetBorder") }
+        border ||= l2_all.max_by { |e| e.definition.bounds.width * e.definition.bounds.height }
+        next unless border
+
+        b_origin = border.bounds.min.transform(t1)
+        b_xaxis = border.transformation.xaxis.transform(t1)
+
+        nest_items = []
+        l2_all.each do |l2|
+          next if l2 == border
+          # SỬA LỖI: Lấy bounds của thực thể cụ thể để có kích thước thật sau khi scale
+          box = l2.bounds 
+          dims = [box.width.to_mm, box.height.to_mm, box.depth.to_mm].sort.reverse
+          length, width = dims[0].round(0), dims[1].round(0)
+
+          world_center = box.center.transform(t1)
+          lx = (world_center - b_origin).dot(b_xaxis).to_mm
+          
+          if width < min_sz
+            side = lx <= 600 ? data["layer_left"] : data["layer_right"]
+            nest_items << { entity: l2, side: side, x: lx, point: world_center, dims: "#{length}x#{width}" }
+          end
+        end
+
+        # LOGIC GOM NHÓM ANCHOR 30MM
+        [data["layer_left"], data["layer_right"]].each do |s|
+          list = nest_items.select{|i| i[:side] == s}
+          list = (s == data["layer_left"]) ? list.sort_by{|i| i[:x]} : list.sort_by{|i| i[:x]}.reverse
+          
+          current_counter = 0
+          group_anchor_x = nil
+
+          list.each do |item|
+            if group_anchor_x.nil? || (item[:x] - group_anchor_x).abs > 30
+              current_counter += 1
+              group_anchor_x = item[:x]
+            end
+            break if current_counter > max_limit
+            item[:final_tag] = "#{item[:side]}#{current_counter}"
+            all_p << { point: item[:point], text: item[:final_tag], x: item[:x], dims: item[:dims] }
+            all_i << item
+          end
+        end
+      end
+
+      if all_i.empty?
+        UI.messagebox("Không tìm thấy tấm nhỏ!")
+      else
+        model.select_tool(AntiFlyUXTool.new(all_p, all_i, data))
+      end
+    end
+
+    # --- 7. TOOL PREVIEW ---
+    class AntiFlyUXTool
+      def initialize(p_data, items, settings); @data = p_data; @items = items; @settings = settings; end
+      def activate; Sketchup.active_model.active_view.invalidate; end
+      def draw(view)
+        @data.each do |item|
+          pos_2d = view.screen_coords(item[:point])
+          color = item[:text].include?(@settings["layer_left"]) ? @settings["color_left"] : @settings["color_right"]
+          view.draw_text(pos_2d, item[:text], color: color, size: 15, bold: true)
+          view.draw_text(Geom::Point3d.new(pos_2d.x, pos_2d.y + 16, 0), "#{item[:dims]} [x:#{item[:x].round(0)}]", color: color, size: 9)
+        end
+      end
+      def onLButtonDown(f, x, y, view)
+        if UI.messagebox("Xác nhận gán Layer?", MB_YESNO) == IDYES
+          m = Sketchup.active_model; m.start_operation('FitC: AntiFly', true)
+          @items.each do |item|
+            l = m.layers.add(item[:final_tag])
+            l.color = Sketchup::Color.new(item[:side] == @settings["layer_left"] ? @settings["color_left"] : @settings["color_right"])
+            item[:entity].make_unique if item[:entity].is_a?(Sketchup::ComponentInstance)
+            AntiFly.tag_edges(item[:entity].definition.entities, l)
+          end
+          m.commit_operation; m.select_tool(nil)
+        end
+      end
+      def onKeyDown(k, r, f, v); Sketchup.active_model.select_tool(nil) if k == VK_ESCAPE; end
+    end
+
+    # --- 8. MENU ---
+    if not file_loaded?(__FILE__)
+      menu = UI.menu("Extensions").add_submenu("FitC Tools")
+      menu.add_item("Chống Bay Pro") { self.show_dialog }
+      file_loaded(__FILE__)
+    end
+  end
+end

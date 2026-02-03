@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* Giữ nguyên CSS cũ của bạn */
+        :root { --primary: #2c3e50; --accent: #3498db; --danger: #e74c3c; --warning: #f39c12; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg); color: #333; overflow-x: hidden; }
+        .app-header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100; }
+        .stats { font-size: 12px; background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 12px; }
+        .table-container { padding: 12px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+        th { padding: 8px 12px; color: #95a5a6; font-size: 10px; text-transform: uppercase; text-align: left; }
+        tr.card { background: white; border-radius: 6px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        tr.card:hover { transform: scale(1.01); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        td { padding: 12px; border: none; vertical-align: middle; }
+        .board-name { font-weight: 600; color: var(--primary); font-size: 13px; display: block; margin-bottom: 2px; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; color: white; }
+        .critical { background: var(--danger); }
+        .warn { background: var(--warning); }
+        .pos { font-family: 'Consolas', monospace; color: #95a5a6; font-size: 10px; margin-left: 10px; }
+        .btn-view { background: var(--accent); color: white; border: none; padding: 7px 14px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #dcdde1; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="app-header">
+        <div style="font-size: 15px; letter-spacing: 0.5px; font-weight: 600;">FITC <span style="font-weight:300">SHARP ANGLE</span></div>
+        <div class="stats"><b id="error-count">0</b> LỖI</div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>CHI TIẾT TẤM LỖI</th>
+                    <th style="text-align:right">XEM</th>
+                </tr>
+            </thead>
+            <tbody id="results-table"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Hàm nhận dữ liệu từ Ruby
+        function updateResults(data) {
+            if (!data) return;
+            const tbody = document.getElementById('results-table');
+            const countEl = document.getElementById('error-count');
+            countEl.innerText = data.length;
+            
+            tbody.innerHTML = data.map((p, i) => {
+                const cls = p.angle < 10 ? 'critical' : 'warn';
+                return `
+                <tr class='card'>
+                    <td>${i+1}</td>
+                    <td>
+                        <span class='board-name'>${p.board_info}</span>
+                        <span class='badge ${cls}'>${p.angle.toFixed(1)}°</span>
+                        <span class='pos'>X:${p.pos_x} Y:${p.pos_y}</span>
+                    </td>
+                    <td><button class='btn-view' onclick='zoomTo(${i})'>XEM</button></td>
+                </tr>`;
+            }).join('');
+        }
+
+        function zoomTo(i) {
+            window.location.href = 'skp:zoom_to@' + i;
+        }
+
+        // Khi HTML load xong, yêu cầu Ruby gửi dữ liệu
+        document.addEventListener('DOMContentLoaded', () => {
+            window.location.href = 'skp:get_data@';
+        });
+    </script>
+</body>
+</html>
