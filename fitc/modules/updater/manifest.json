@@ -2,22 +2,17 @@
   {
     "path": "fitc/loader.rbe",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/loader.rbe",
-    "md5": "77a057ad13aa67814b06dd30ee00b0d8"
+    "md5": "77cca732019685a9e10ef40f6b3480df"
   },
   {
     "path": "fitc/modules/anti_fly/main.rbe",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/anti_fly/main.rbe",
-    "md5": "acc138ad620d0b5426307b841c847029"
+    "md5": "85f2ef1bb5949ae5a5c4fe9105e420dc"
   },
   {
     "path": "fitc/modules/anti_fly/web/dialog.html",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/anti_fly/web/dialog.html",
     "md5": "8e1d79b4107f5722e6aea1d1e9739908"
-  },
-  {
-    "path": "fitc/modules/anti_fly/web/dialog_1.0.1.html",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/anti_fly/web/dialog_1.0.1.html",
-    "md5": "9d3e0b23332a677233c570b38315479e"
   },
   {
     "path": "fitc/modules/anti_fly/web/main.js",
@@ -30,11 +25,6 @@
     "md5": "f6886638e119c3fbafcf396f073d5f88"
   },
   {
-    "path": "fitc/modules/autocombine/debug.rbe",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/autocombine/debug.rbe",
-    "md5": "8f9f866cc076ee607e57452752f7a738"
-  },
-  {
     "path": "fitc/modules/autocombine/main.rbe",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/autocombine/main.rbe",
     "md5": "2b9e628ec4770fba4fdef315f8f150e6"
@@ -45,9 +35,14 @@
     "md5": "e90d22f347d31cb8652faae26a856074"
   },
   {
-    "path": "fitc/modules/dev_tools/main.rbe",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/dev_tools/main.rbe",
-    "md5": "3b6c735280451bcca570455c147431d1"
+    "path": "fitc/modules/find_error_nesting/dialog.html",
+    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/find_error_nesting/dialog.html",
+    "md5": "106089402fb4a22659ca1d9c35174a92"
+  },
+  {
+    "path": "fitc/modules/find_error_nesting/main.rbe",
+    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/find_error_nesting/main.rbe",
+    "md5": "616db3d4c38c8ea3d3741a1414f5dfde"
   },
   {
     "path": "fitc/modules/find_non_label/main.rbe",
@@ -57,7 +52,7 @@
   {
     "path": "fitc/modules/find_two_face/main.rbe",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/find_two_face/main.rbe",
-    "md5": "379d16341e5f679d2fde03f2f6eb4078"
+    "md5": "d759e94968c0c3b1d400db90704591c0"
   },
   {
     "path": "fitc/modules/find_two_face/ui.html",
@@ -67,7 +62,7 @@
   {
     "path": "fitc/modules/license_manager/main.rbe",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/license_manager/main.rbe",
-    "md5": "bea94ad2267e9194b750358d715d908f"
+    "md5": "cbeef68c1d3e63ac50229ec65d93999b"
   },
   {
     "path": "fitc/modules/make_custome_line/main.rbe",
@@ -90,38 +85,18 @@
     "md5": "2fc37b5d69d39b3265d13ec13fcc037c"
   },
   {
-    "path": "fitc/resource/icons/1.png",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/resource/icons/1.png",
-    "md5": "4dbe01bafa87bc86a3e28056d9d0d87a"
-  },
-  {
-    "path": "fitc/resource/icons/2.png",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/resource/icons/2.png",
-    "md5": "024e15d3217213181ddd048f10dde308"
-  },
-  {
-    "path": "fitc/resource/icons/3.png",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/resource/icons/3.png",
-    "md5": "287da759349f5e8efcd773975c765dde"
-  },
-  {
-    "path": "fitc/resource/icons/4.png",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/resource/icons/4.png",
-    "md5": "e2dce02494875e592913c793aced2a55"
-  },
-  {
-    "path": "fitc/resource/icons/5.png",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/resource/icons/5.png",
-    "md5": "9a9ba0cfeffe982b9b0ba838a45e8817"
-  },
-  {
     "path": "fitc/resource/icons/6.png",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/resource/icons/6.png",
     "md5": "33467abd8471e741beac63942da38a17"
   },
   {
+    "path": "fitc/resource/icons/7.png",
+    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/resource/icons/7.png",
+    "md5": "d0d8cec5beef26784e4210efca8c0aae"
+  },
+  {
     "path": "fitc/toolbar.rbe",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/toolbar.rbe",
-    "md5": "550770692920c6c8494518c141b851de"
+    "md5": "2580734a6718df83a47da712440c3b82"
   }
 ]
