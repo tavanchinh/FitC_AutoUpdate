@@ -1,14 +1,10 @@
 {
-
   "version_code": 10005,
-
   "version_name": "1.0.5",
-
   "manifest_url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/updater/manifest.json",
-
-  "changelog": "Thêm chống bay theo vùng TREN / DUOI \nThêm chức năng tìm kiếm lỗi Nesting",
-
+  "changelog": "Thêm chống bay theo vùng TREN / DUOI \nThêm chức năng tìm kiếm lỗi Nesting"
 }
+
 
 
 
