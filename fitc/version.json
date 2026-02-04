@@ -1,0 +1,7 @@
+{
+  "version_code": 10004,
+  "version_name": "1.0.4",
+  "changelog": "\nThêm chống bay theo vùng TREN / DUOI \nThêm chức năng tìm kiếm lỗi Nesting",
+  "manifest_url": "http://fitc.tavanchinh.com/update/1.0.4/manifest.json",
+  "base_url": "http://fitc.tavanchinh.com/update/1.0.4"
+}
