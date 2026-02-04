@@ -25,16 +25,6 @@
     "md5": "f6886638e119c3fbafcf396f073d5f88"
   },
   {
-    "path": "fitc/modules/autocombine/main.rbe",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/autocombine/main.rbe",
-    "md5": "2b9e628ec4770fba4fdef315f8f150e6"
-  },
-  {
-    "path": "fitc/modules/custome_nesting/main.rbe",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/custome_nesting/main.rbe",
-    "md5": "e90d22f347d31cb8652faae26a856074"
-  },
-  {
     "path": "fitc/modules/find_error_nesting/dialog.html",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/find_error_nesting/dialog.html",
     "md5": "106089402fb4a22659ca1d9c35174a92"
@@ -50,34 +40,9 @@
     "md5": "d923cc94c6096087dd3e005a2c402ace"
   },
   {
-    "path": "fitc/modules/find_two_face/main.rbe",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/find_two_face/main.rbe",
-    "md5": "d759e94968c0c3b1d400db90704591c0"
-  },
-  {
-    "path": "fitc/modules/find_two_face/ui.html",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/find_two_face/ui.html",
-    "md5": "c24258f14825b4701f566aa81477d652"
-  },
-  {
     "path": "fitc/modules/license_manager/main.rbe",
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/license_manager/main.rbe",
     "md5": "cbeef68c1d3e63ac50229ec65d93999b"
-  },
-  {
-    "path": "fitc/modules/make_custome_line/main.rbe",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/make_custome_line/main.rbe",
-    "md5": "7adf72c8bdec0aba34dfc62f2fd85789"
-  },
-  {
-    "path": "fitc/modules/make_custome_line/web/dialog.html",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/make_custome_line/web/dialog.html",
-    "md5": "0a86dc2864d7439cda40257edf5d19ee"
-  },
-  {
-    "path": "fitc/modules/make_face/main.rbe",
-    "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/modules/make_face/main.rbe",
-    "md5": "a1e98c22b3cdc67ab206744b177f9c2e"
   },
   {
     "path": "fitc/modules/updater/updater.rbe",
@@ -99,4 +64,5 @@
     "url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/main/fitc/toolbar.rbe",
     "md5": "2580734a6718df83a47da712440c3b82"
   }
+
 ]
