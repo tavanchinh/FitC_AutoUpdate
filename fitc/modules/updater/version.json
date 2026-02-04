@@ -1,14 +1,15 @@
 {
 
-  "version_code": 104,
+  "version_code": 105,
 
-  "version_name": "1.0.4",
+  "version_name": "1.0.5",
 
   "manifest_url": "https://raw.githubusercontent.com/tavanchinh/FitC_AutoUpdate/refs/heads/main/fitc/modules/updater/manifest.json",
 
   "changelog": "\nThêm chức năng chống bay theo vùng TREN / DUOI \nThêm chức năng tìm kiếm lỗi Nesting"
 
 }
+
 
 
 
